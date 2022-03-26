@@ -7,9 +7,10 @@
   "license": "MIT",
   "scripts": {
     "prepare": "husky install",
-    "test": "jest --watch --silent --noStackTrace",
-    "test:staged": "jest --passWithNoTests --findRelatedTests --silent --noStackTrace",
-    "test:ci": "jest --coverage --silent --noStackTrace"
+    "test": "jest --silent --noStackTrace --passWithNoTests",
+    "test:unit": "yarn test --watch",
+    "test:staged": "yarn test --findRelatedTests",
+    "test:ci": "yarn test --coverage"
   },
   "standard": {
     "env": [
