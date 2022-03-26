@@ -77,22 +77,47 @@ const makeTokenGeneratorWithError = () => {
   return new TokenGeneratorSpy()
 }
 
+const makeUpdateAccessTokenRepository = () => {
+  class UpdateAccessTokenRepositorySpy {
+    async update (userId, accessToken) {
+      this.userId = userId
+      this.accessToken = accessToken
+    }
+  }
+
+  const updateAcessTokenRepositorySpy = new UpdateAccessTokenRepositorySpy()
+  return updateAcessTokenRepositorySpy
+}
+
+// const makeUpdateAccessTokenRepositoryWithError = () => {
+//   class UpdateAccessTokenRepositorySpy {
+//     async update () {
+//       throw new Error()
+//     }
+//   }
+
+//   return new UpdateAccessTokenRepositorySpy()
+// }
+
 const makeSut = () => {
   const loadUserByEmailRepositorySpy = makeLoadUserByEmailRepository()
   const encrypterSpy = makeEncrypter()
   const tokenGeneratorSpy = makeTokenGenerator()
+  const updateAcessTokenRepositorySpy = makeUpdateAccessTokenRepository()
 
   const sut = new AuthUseCase({
     loadUserByEmailRepository: loadUserByEmailRepositorySpy,
     encrypter: encrypterSpy,
-    tokenGenerator: tokenGeneratorSpy
+    tokenGenerator: tokenGeneratorSpy,
+    updateAcessTokenRepository: updateAcessTokenRepositorySpy
   })
 
   return {
     sut,
     loadUserByEmailRepositorySpy,
     encrypterSpy,
-    tokenGeneratorSpy
+    tokenGeneratorSpy,
+    updateAcessTokenRepositorySpy
   }
 }
 
@@ -155,6 +180,19 @@ describe('Auth UseCase', () => {
 
     expect(accessToken).toBe(tokenGeneratorSpy.accessToken)
     expect(accessToken).toBeTruthy()
+  })
+
+  test('should call UpdateAccessTokenRepository with correct values', async () => {
+    const {
+      sut,
+      loadUserByEmailRepositorySpy,
+      tokenGeneratorSpy,
+      updateAcessTokenRepositorySpy
+    } = makeSut()
+    await sut.auth('test@email.com', '12345')
+
+    expect(updateAcessTokenRepositorySpy.userId).toBe(loadUserByEmailRepositorySpy.user.id)
+    expect(updateAcessTokenRepositorySpy.accessToken).toBe(tokenGeneratorSpy.accessToken)
   })
 
   test('should throw if invalid dependencies are provided', async () => {
