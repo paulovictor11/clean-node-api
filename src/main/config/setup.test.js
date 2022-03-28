@@ -7,7 +7,7 @@ describe('App Setup', () => {
       res.send('')
     })
 
-    const res = await request(app).get('/')
+    const res = await request(app).get('/test_header')
 
     expect(res.headers['x-powered-by']).toBeUndefined()
   })
