@@ -1,7 +1,7 @@
 {
   "name": "clean-node-api",
   "version": "1.0.0",
-  "main": "index.js",
+  "main": "src/main/index.js",
   "repository": "git@github.com:paulovictor11/clean-node-api.git",
   "author": "Paulo Victor <37181462+paulovictor11@users.noreply.github.com>",
   "license": "MIT",
@@ -11,7 +11,8 @@
     "test:unit": "yarn test --watch -c jest-unit-config.js",
     "test:integration": "yarn test --watch -c jest-integration-config.js",
     "test:staged": "yarn test --findRelatedTests",
-    "test:ci": "yarn test --coverage"
+    "test:ci": "yarn test --coverage",
+    "start": "node src/main/index.js"
   },
   "standard": {
     "env": [
@@ -27,6 +28,7 @@
   },
   "dependencies": {
     "bcrypt": "^5.0.1",
+    "express": "^4.17.3",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
     "validator": "^13.7.0"
